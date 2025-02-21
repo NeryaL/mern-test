@@ -23,9 +23,11 @@ app.use(express.json()); // allows us to accept JSON data in the req.body
 app.use("/api/products", productRoutes);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+  // Adjust the path: since server.js is in /backend, move one level up to frontend/dist
+  const staticPath = path.join(__dirname, "../frontend/dist");
+  app.use(express.static(staticPath));
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+    res.sendFile(path.join(staticPath, "index.html"));
   });
 }
 
